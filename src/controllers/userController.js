@@ -1,43 +1,59 @@
-let users = [];
+const userService = require('../services/userServices')
 
 const getAllUsers = (req, res) => {
-    res.status(200).json(users)
+    try {
+        res.status(200).json(userService.getAllUsers())
+    } catch (error) {
+        next(error)
+    }
 }
 
-const getUserById = (req, res) => {
-    const userId = parseInt(req.params.id);
+const getUserById = (req, res, next) => {
+    try {
+        const user = userService.getUserById(parseInt(req.params.id));
 
-    if (userId > users.length) return res.status(404).send('Id incorrecto');
+        if (!user) {
+            const error = new Error('Usuario no encontrado')
+            error.status = 404
+            return next(error)
+        }
 
-    const user = users.find(user => user.id === userId);
-
-    if (!user) return res.status(404).send('Usuario no encontrado.');
-
-    res.status(200).json(user);
-}
-
-const createUser = (req, res) => {
-    const { name, email } = req.body;
-
-    if (!name || !email) return res.status(400).send('Falta ingresar datos.');
-
-    const newUser = {
-        id: users.length + 1,
-        name,
-        email
+        res.status(200).json(user);
+    } catch (error) {
+        next(error)
     }
 
-    users.push(newUser);
-    res.status(201).send('¡Usuario creado!')
+
+}
+
+const createUser = (req, res, next) => {
+    try {
+        const { name, email } = req.body;
+        userService.createUser(name, email)
+        res.status(201).send('¡Usuario creado!')
+    } catch (error) {
+        next(error)
+    }
+
 };
 
 const deleteUser = (req, res) => {
-    const user = users.find(user => user.id === parseInt(req.params.id));
+    try {
+        const user = userService.getUserById(parseInt(req.params.id));
 
-    if (!user || user > users.length) return res.status(404).send('Id incorrecto');
+        if (!user) {
+            const error = new Error('Usuario no encontrado')
+            error.status = 404
+            return next(error)
+        }
 
-    users.splice(users.indexOf(user),1)
-    res.status(204).send('Se borro correctamente el usuario');
+        userService.deleteUser(user);
+
+        res.status(204).send('Se borro correctamente el usuario')
+
+    } catch (error) {
+        next(error)
+    }
 }
 
 module.exports = {
