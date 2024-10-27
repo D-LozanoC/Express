@@ -18,3 +18,10 @@ Se realiza un ejemplo de una API basica para la recolección, busqueda y elimina
     - Separación de las funciones de servicio del controlador
     - Implementar un middleware para la verificación de usuarios al momento de crearlo
     - Definiciones como endpoints y parámetros de ruta
+
+## API v3 implementación de rutas anidadas y query strings
+
+- Cosas aprendidas
+    - Como anidar una ruta dentro de Express
+    - Validar distintos parámetros dentro de la ruta anidada
+    - Como obtener el req.query para crear filtros, paginación y ordenamiento de los productos
