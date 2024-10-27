@@ -1,15 +1,18 @@
 const express = require('express');
-const router = express.Router()
+const router = express.Router();
+const productRoutes = require('./productRoutes')
 const userController = require('../controllers/userController')
-const authMiddleware = require('../middlewares/authMiddleware');
+const {authSecureTokenMiddleware, authUserId} = require('../middlewares/authMiddleware');
 const validateUser = require('../middlewares/validateUserMiddleware');
 
-router.get('/', authMiddleware, userController.getAllUsers);
+router.get('/', authSecureTokenMiddleware, userController.getAllUsers);
 
-router.get('/:id', authMiddleware, userController.getUserById);
+router.get('/:userId', authSecureTokenMiddleware, userController.getUserById);
 
-router.post('/', authMiddleware, validateUser, userController.createUser);
+router.post('/', authSecureTokenMiddleware, validateUser, userController.createUser);
 
-router.delete('/:id', authMiddleware, userController.deleteUser)
+router.delete('/:userId', authSecureTokenMiddleware, userController.deleteUser)
+
+router.use('/:userId/products', authSecureTokenMiddleware, authUserId, productRoutes)
 
 module.exports = router;

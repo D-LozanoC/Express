@@ -1,6 +1,6 @@
 const userService = require('../services/userServices')
 
-const getAllUsers = (req, res) => {
+const getAllUsers = (req, res, next) => {
     try {
         res.status(200).json(userService.getAllUsers())
     } catch (error) {
@@ -10,7 +10,7 @@ const getAllUsers = (req, res) => {
 
 const getUserById = (req, res, next) => {
     try {
-        const user = userService.getUserById(parseInt(req.params.id));
+        const user = userService.getUserById(parseInt(req.params.userId));
 
         if (!user) {
             const error = new Error('Usuario no encontrado')
@@ -37,9 +37,9 @@ const createUser = (req, res, next) => {
 
 };
 
-const deleteUser = (req, res) => {
+const deleteUser = (req, res, next) => {
     try {
-        const user = userService.getUserById(parseInt(req.params.id));
+        const user = userService.getUserById(parseInt(req.params.userId));
 
         if (!user) {
             const error = new Error('Usuario no encontrado')

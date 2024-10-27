@@ -1,4 +1,13 @@
-let users = [];
+let users = [{
+    id: 1,
+    name: "David",
+    email: "david@gmail.com"
+},
+{
+    id: 2,
+    name: "Olga",
+    email: "olga@gmail.com"
+}];
 
 const getAllUsers = () => users;
 
